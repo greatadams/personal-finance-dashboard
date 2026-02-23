@@ -214,9 +214,6 @@ public class TransactionServices {
         //get customer ID from dB
         List<Transaction> transactions = transactionRepository.findByCustomerId(customerId);
 
-        if (transactions.isEmpty()) {
-            throw new RuntimeException("No Transactions found fot Customer with id " + customerId);
-        }
         return transactions.stream()
                 .map(transactionMapper::mapToResponseDTO)
                 .toList();

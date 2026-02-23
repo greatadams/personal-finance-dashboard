@@ -41,7 +41,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors ->cors.configurationSource(corsConfigurationSource())) //enable CORS in spring security
+                //Gateway handles CORS now->.cors(cors ->cors.configurationSource(corsConfigurationSource())) //enable CORS in spring security
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//Stateless API (no server session)
                 //Security rules (who can access what)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
@@ -54,22 +54,22 @@ public class SecurityConfig {
     }
 
     //THIS IS WHAT MAKES COOKIES WORK CROSS-ORIGIN
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:3000",  // CRA
-                "http://localhost:5173"   // Vite
-        ));
-
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization" , "Content-Type","Accept","X-Requested-With"));
-        configuration.setAllowCredentials(true); //REQUIRED FOR COOKIES
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//
+//        configuration.setAllowedOrigins(List.of(
+//                "http://localhost:3000",  // CRA
+//                "http://localhost:5173"   // Vite
+//        ));
+//
+//        configuration.setAllowedMethods(List.of("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"));
+//        configuration.setAllowedHeaders(List.of("Authorization" , "Content-Type","Accept","X-Requested-With"));
+//        configuration.setAllowCredentials(true); //REQUIRED FOR COOKIES
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
 }

@@ -23,7 +23,7 @@ public class MonthlyAnalyticsService {
       //get the month and year analytics from db
      MonthlyAnalytics analytics = monthlyAnalyticsRepository
              .findByCustomerIdAndMonthAndYear(customerId,month,year)
-             .orElseThrow(()->new RuntimeException("No Analytics found"));
+             .orElse(null);
 
       //analytics entity -> analyticsResponse user can see
       return monthlyAnalyticsMapper.mapToResponseDTO(analytics);
@@ -33,9 +33,7 @@ public class MonthlyAnalyticsService {
       // Get all analytics rows for this customer (all months / all years in DB)
      List <MonthlyAnalytics> analyticsList = monthlyAnalyticsRepository.findByCustomerId(customerId);
 
-     if(analyticsList.isEmpty()){
-         throw new RuntimeException("No Analytics found for the given customerId: " + customerId);
-     }
+
 
       return analyticsList.stream()
               .map(monthlyAnalyticsMapper::mapToResponseDTO)
@@ -46,9 +44,7 @@ public class MonthlyAnalyticsService {
   public List<AnalyticsResponseDTO>getMonthlyAnalyticsByYear(Long customerId,int year){
       List<MonthlyAnalytics> analyticsList = monthlyAnalyticsRepository.findByCustomerIdAndYear(customerId ,year);
 
-      if(analyticsList.isEmpty()){
-          throw new RuntimeException("No Analytics found for customerId: " + customerId + "and year" + year);
-      }
+
 
       return analyticsList.stream().map(monthlyAnalyticsMapper::mapToResponseDTO)
               .toList();

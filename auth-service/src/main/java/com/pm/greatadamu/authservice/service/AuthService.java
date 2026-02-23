@@ -10,6 +10,8 @@ import com.pm.greatadamu.authservice.exception.UserDeactivatedException;
 import com.pm.greatadamu.authservice.jwtUtil.JwtService;
 import com.pm.greatadamu.authservice.jwtUtil.TokenHashUtil;
 import com.pm.greatadamu.authservice.kafka.CustomerEvent;
+import com.pm.greatadamu.authservice.kafka.UserRegisteredEvent;
+import com.pm.greatadamu.authservice.kafka.UserRegisteredEventProducer;
 import com.pm.greatadamu.authservice.model.RefreshToken;
 import com.pm.greatadamu.authservice.model.Role;
 import com.pm.greatadamu.authservice.model.Status;
@@ -17,7 +19,6 @@ import com.pm.greatadamu.authservice.model.User;
 import com.pm.greatadamu.authservice.repository.RefreshTokenRepository;
 import com.pm.greatadamu.authservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -39,6 +39,8 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+    private final UserRegisteredEventProducer userRegisteredEventProducer;
 
     private static final int MAX_FAILED_ATTEMPTS = 5;
 
@@ -70,6 +72,19 @@ public class AuthService {
       // Use userId as customerId (temporary)
         user.setCustomerId(user.getId());
         userRepository.save(user);
+
+        // Publish event to Kafka for Customer Service
+        UserRegisteredEvent event = UserRegisteredEvent.builder()
+                .email(createUserRegistrationRequestDTO.getEmail())
+                .firstName(createUserRegistrationRequestDTO.getFirstName())
+                .lastName(createUserRegistrationRequestDTO.getLastName())
+                .phoneNumber(createUserRegistrationRequestDTO.getPhoneNumber())
+                .address(createUserRegistrationRequestDTO.getAddress())
+                .gender(createUserRegistrationRequestDTO.getGender())       // Get from DTO
+                .build();
+
+        userRegisteredEventProducer.sendUserRegisteredEvent(event);
+        log.info("UserRegisteredEvent published for email: {}", createUserRegistrationRequestDTO.getEmail());
     }
 
     @Transactional

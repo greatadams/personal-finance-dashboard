@@ -3,14 +3,17 @@ package com.pm.greatadamu.accountservice.service;
 import com.pm.greatadamu.accountservice.dto.AccountRequestDto;
 import com.pm.greatadamu.accountservice.dto.AccountResponseDto;
 import com.pm.greatadamu.accountservice.exception.AccountNotFoundException;
+import com.pm.greatadamu.accountservice.exception.AccountTypeAlreadyExistException;
 import com.pm.greatadamu.accountservice.mapper.AccountMapper;
 import com.pm.greatadamu.accountservice.model.Account;
+import com.pm.greatadamu.accountservice.model.AccountType;
 import com.pm.greatadamu.accountservice.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -20,16 +23,28 @@ public class AccountService {
     private final AccountMapper accountMapper;
 
     public AccountResponseDto createAccount(AccountRequestDto accountRequestDto) {
-        //take user response and map to account entity
-        Account account = accountMapper.mapToEntity(accountRequestDto);
+        //check if customer already has this account type
+        Optional<Account> existingAccount = accountRepository.findByCustomerIdAndAccountType(
+                accountRequestDto.getCustomerId(),
+                accountRequestDto.getAccountType()
+        );
+        if (existingAccount.isPresent()) {
+            throw new AccountTypeAlreadyExistException(accountRequestDto.getAccountType());
+        }
+            //take user response and map to account entity->CREATE ACCOUNT
+            Account account = accountMapper.mapToEntity(accountRequestDto);
 
-        // save entity to DB(insert into accounts table)
-        Account savedAccount=  accountRepository.save(account);
+          if (account.getAccountType() == AccountType.CREDIT) {
+              account.setAccountBalance(new BigDecimal("1000.00"));
+          }
 
-        //send it(entity) to responseDTO so user can see account created
-        return accountMapper.mapToResponse(savedAccount);
+            // save entity to DB(insert into accounts table)
+            Account savedAccount=  accountRepository.save(account);
 
-    }
+            //send it(entity) to responseDTO so user can see account created
+            return accountMapper.mapToResponse(savedAccount);
+        }
+
 
     public AccountResponseDto updateAccount(Long id,AccountRequestDto accountRequestDto) {
         //get account from db
@@ -51,6 +66,13 @@ public class AccountService {
         Account acct = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountNotFoundException(accountNumber));
         return accountMapper.mapToResponse(acct);
+    }
+
+    public List<AccountResponseDto> getAccountsByCustomerId(Long customerId){
+        List<Account> accounts = accountRepository.findByCustomerId(customerId);
+        return accounts.stream()
+                .map(accountMapper ::mapToResponse)
+                .toList();
     }
 
     public void deleteAccountByAccountNumber(String accountNumber){

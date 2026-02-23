@@ -48,8 +48,17 @@ public class SecurityConfig {
                         //auth endpoints must be public (login/register/jwks if routed here)
                         .pathMatchers("/api/auth/**").permitAll()
 
-                        //// protected business endpoints
-                        .pathMatchers("/api/accounts/**").hasAnyRole("USER", "ADMIN")
+                        //// protected business endpoints FOR ACCOUNT
+                        .pathMatchers("/api/accounts/**").hasAnyRole("USER", "ADMIN","CUSTOMER")
+
+                        /// PROTECTED BUSINESS ENDPOINT FOR CUSTOMER
+                        .pathMatchers("/api/customers/**").hasAnyRole("ADMIN","CUSTOMER")
+
+                        /// PROTECTED BUSINESS ENDPOINT FOR TRANSACTION
+                        .pathMatchers("/api/transactions/**").hasAnyRole("USER", "ADMIN", "CUSTOMER")
+
+                        //PROTECTED BUSINESS ENDPOINT FOR ANALYTICS
+                        .pathMatchers("/api/analytics/**").hasAnyRole("USER", "ADMIN", "CUSTOMER")
 
                         // default policy: valid JWT required
                         .anyExchange().authenticated()

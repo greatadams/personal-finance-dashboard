@@ -4,6 +4,7 @@ import com.pm.greatadamu.customerservice.dto.CustomerRequestDTO;
 import com.pm.greatadamu.customerservice.dto.CustomerResponseDTO;
 import com.pm.greatadamu.customerservice.kafka.CustomerEvent;
 import com.pm.greatadamu.customerservice.kafka.CustomerEventProducer;
+import com.pm.greatadamu.customerservice.kafka.UserRegisteredEvent;
 import com.pm.greatadamu.customerservice.mapper.CustomersMapper;
 import com.pm.greatadamu.customerservice.model.Customer;
 import com.pm.greatadamu.customerservice.repository.CustomerRepository;
@@ -53,6 +54,23 @@ public class CustomerService {
 
     }
 
+    //customer create from event
+    @Transactional
+    public CustomerResponseDTO createCustomerFromEvent(UserRegisteredEvent event) {
+        log.info("Creating customer from registration event: {}", event.getEmail());
+
+        // Convert event → DTO
+        CustomerRequestDTO dto = new CustomerRequestDTO(
+                event.getFirstName(),
+                event.getLastName(),
+                event.getEmail(),
+                event.getPhoneNumber(),
+                event.getAddress()
+        );
+
+        // Reuse existing method (does everything for you!)
+        return createCustomer(dto);
+    }
     //get all customer
     public List<CustomerResponseDTO> findAllCustomers() {
         //get all customer

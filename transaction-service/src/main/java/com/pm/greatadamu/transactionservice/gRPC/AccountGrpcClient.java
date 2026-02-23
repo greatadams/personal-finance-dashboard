@@ -24,7 +24,7 @@ public class AccountGrpcClient {
     @Value("${grpc.account-service.port:9090}")
     private int accountServicePort;
 
-    @Value("2000")
+    @Value("${grpc.deadline-ms:2000}")
     private long deadlineMs;
 
     private ManagedChannel channel;

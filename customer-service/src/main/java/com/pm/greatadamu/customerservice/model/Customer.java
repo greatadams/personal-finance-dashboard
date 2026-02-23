@@ -32,6 +32,9 @@ public class Customer {
 
     private String address;
 
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

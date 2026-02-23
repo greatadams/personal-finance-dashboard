@@ -1,0 +1,137 @@
+.form{
+    position: relative;
+   display: grid;
+   place-items: center;
+   min-height: 100vh;
+
+   background-image: url("../assets/form_bg.png");
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   
+}
+/* Logo in top-left */
+.logo-auth {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0F2A44;
+  cursor: default;
+  z-index: 10;
+}
+
+.form h2{
+    color: #0F2A44;
+    font-size: 2rem;
+    
+
+}
+.form-container{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+ 
+    background: rgba(255,255,255,0.92);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(15,42,68,0.12);
+    backdrop-filter: blur(6px);
+}
+
+input,
+.form-primary-btn{
+    padding: 1rem;
+    border: 1px solid #d1d5db;
+    outline: none;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+   
+}
+input:focus
+{
+  border-color: #0F2A44;
+    box-shadow: 0 0 0 4px rgba(15, 42, 68, 0.12);
+     
+}
+
+.form-primary-btn{
+    background-color: #17395A;
+    color: #fff;
+}
+.form-primary-btn:hover{
+    background-color: #0F2A44;
+}
+
+.form-primary-btn:active{
+  transform: translateY(1px);
+}
+.form-input{
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+  
+   
+}
+.form-secondary-btn{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.form-secondary-btn button{
+    background: none;
+    border: none;
+    padding: 0;
+    color: #1F3A5F;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer; 
+}
+.form-secondary-btn button:hover {
+  text-decoration: underline;
+  color: #0F2A44;
+}
+.form-secondary-btn button:focus {
+  outline: none; 
+}
+.form-secondary-btn button:first-child {
+  color: #6B7280; 
+}
+
+.form-secondary-btn button:first-child:hover {
+  color: #1F3A5F;
+}
+
+select {
+    padding: 1rem;
+    border: 1px solid #d1d5db;
+    outline: none;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    cursor: pointer;
+}
+select:focus {
+    border-color: #0F2A44;
+    box-shadow: 0 0 0 4px rgba(15, 42, 68, 0.12);
+}
+
+label {
+    text-align: left;
+    color: #1F3A5F;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+.error-message {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+

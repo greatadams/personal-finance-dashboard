@@ -1,70 +1,81 @@
 server:
-  port: ${SERVER_PORT:8086}
+  port: ${SERVER_PORT:9090}
 
 spring:
   application:
     name: api-gateway
 
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
   cloud:
     gateway:
-      forwarded:
-        enabled: true
+      server:
+        webflux:
+          forwarded:
+            enabled: true
 
-      httpclient:
-        connect-timeout: 2000
-        response-timeout: 5s
+          httpclient:
+            connect-timeout: 2000
+            response-timeout: 5s
 
-      globalcors:
-        corsConfigurations:
-          "[/**]":
-            allowedOrigins:
-              - "https://your-frontend.com"
-              - "http://localhost:5173"
-            allowedMethods: [GET, POST, PUT, PATCH, DELETE, OPTIONS]
-            allowedHeaders:
-              - Authorization
-              - Content-Type
-              - X-Requested-With
-              - Accept
-              - Origin
-            allowCredentials: true
+          globalcors:
+            cors-configurations:
+              "[/**]":
+                allowed-origins:
+                  - "https://your-frontend.com"
+                  - "http://localhost:5173"
+                allowed-methods: [GET, POST, PUT, PATCH, DELETE, OPTIONS]
+                allowed-headers:
+                  - Authorization
+                  - Content-Type
+                  - X-Requested-With
+                  - Accept
+                  - Origin
+                allow-credentials: true
+          routes:
+            # -----------------------
+            # AUTH SERVICE ROUTE
+            # -----------------------
+            - id: auth-service
+              uri: ${AUTH_SERVICE_URI:http://localhost:8085}
+              predicates:
+                - Path=/api/auth/**
 
-      routes:
-         # -----------------------
-         # AUTH SERVICE ROUTE
-         # -----------------------
-        - id: auth-service
-          uri: ${AUTH_SERVICE_URI:http://localhost:8085}
-          predicates:
-            - Path=/api/auth/**
-          filters:
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 10
-                redis-rate-limiter.burstCapacity: 20
-                key-resolver: "#{@ipKeyResolver}"
-            - name: CircuitBreaker
-              args:
-                name: authCB
-                fallbackUri: forward:/fallback/auth
+            # -----------------------
+            # ACCOUNT SERVICE ROUTE
+            # -----------------------
+            - id: account-service
+              uri: ${ACCOUNT_SERVICE_URI:http://localhost:8082}
+              predicates:
+                - Path=/api/accounts/**
 
-        # -----------------------
-        # ACCOUNT SERVICE ROUTE
-        # -----------------------
-        - id: account-service
-          uri: ${ACCOUNT_SERVICE_URI:http://localhost:8082}
-          predicates:
-            - Path=/api/accounts/**
-          filters:
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 30
-                redis-rate-limiter.burstCapacity: 60
-                key-resolver: "#{@userOrIpKeyResolver}"
+            # -----------------------
+            # CUSTOMER SERVICE ROUTE
+            # -----------------------
+            - id: customer-service
+              uri: ${CUSTOMER_SERVICE_URI:http://localhost:8084}
+              predicates:
+                - Path=/api/customers/**
+
+            # -----------------------
+            # TRANSACTION SERVICE ROUTE
+            # -----------------------
+            - id: transaction-service
+              uri: ${TRANSACTION_SERVICE_URI:http://localhost:8081}
+              predicates:
+                - Path=/api/transactions/**
+
+            # -----------------------
+            # ANALYTICS SERVICE ROUTE
+            # -----------------------
+            - id: analytic-service
+              uri: ${ANALYTICS_SERVICE_URI:http://localhost:8083}
+              predicates:
+                - Path=/api/analytics/**
+
 
   security:
     oauth2:

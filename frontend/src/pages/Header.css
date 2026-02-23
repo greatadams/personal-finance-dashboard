@@ -1,0 +1,86 @@
+/* Header Section */
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    padding: 1.5rem 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(15, 42, 68, 0.08);
+}
+
+/* Logo */
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0F2A44;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logo:hover {
+  color: #17395A;
+  transform: scale(1.05);
+}
+
+/* Header Buttons Container */
+.header-buttons {
+  display: flex;
+  gap: 1rem;  /* Controls space between buttons */
+}
+
+/* avater */
+.avatar-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #17395A;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.avatar-circle:hover {
+  background-color: #0F2A44;
+  transform: scale(1.05);
+}
+
+/* analytics button */
+.analytics-btn {
+    background-color: #17395A;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.analytics-btn:hover {
+    background-color: #0F2A44;
+}
+
+/* 
+log-out btn*/
+.logout-btn {
+    background-color: #EF4444;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #DC2626;
+}

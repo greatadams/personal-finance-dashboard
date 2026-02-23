@@ -27,8 +27,9 @@
         <!-- Reactive Spring Cloud Gateway (industry standard) -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
         </dependency>
+
 
         <!-- Security + JWT verification at the gateway -->
         <dependency>
