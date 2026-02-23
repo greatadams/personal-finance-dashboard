@@ -4,7 +4,7 @@ A full-stack microservices application for managing personal finances with accou
 
 ## 🎥 Demo Video
 
-[Watch Demo](https://youtube.com/link-here) _(Coming soon)_
+[Watch Demo](https://youtu.be/_quh_LwxrpI)
 
 ## ✨ Features
 
