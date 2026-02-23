@@ -193,8 +193,34 @@ After starting services, register a new account through the UI.
 
 ## 📸 Screenshots
 
-_(Add screenshots after recording demo video)_
+### Authentication
+![Login Page](docs/screenshots/login-page.png)
+*Secure login with JWT authentication*
 
+![Registration](docs/screenshots/Registration-form-page.png)
+*User registration form*
+
+### Account Management
+![Account Dashboard](docs/screenshots/acctpage01.png)
+*Main account dashboard*
+
+![Create Account](docs/screenshots/create-account.png)
+*Creating new accounts (Savings, Checking, Credit)*
+
+### Transactions
+![Transaction History](docs/screenshots/transaction-history.png)
+*View all transactions*
+
+![Create Transaction](docs/screenshots/create-transaction.png)
+*Transfer money between accounts*
+
+### Analytics
+![Analytics Dashboard](docs/screenshots/analytics-page.png)
+*Monthly spending and income visualization*
+
+### User Profile
+![User Profile](docs/screenshots/user-profile.png)
+*View and edit profile information*
 ## 🔑 Key Technical Highlights
 
 - **gRPC Integration:** Real-time account balance validation during transactions
@@ -217,11 +243,12 @@ _(Add screenshots after recording demo video)_
 
 ## 👤 Author
 
-**Your Name**
-
 - LinkedIn: [great adamu](https://www.linkedin.com/in/great-adamu/)
 - GitHub: [great adams](https://github.com/greatadams)
 - Email: adamsgreat15@gmail.com
+
+
+
 
 ## 📄 License
 
